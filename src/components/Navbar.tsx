@@ -17,8 +17,8 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-8 items-center">
           <Link to="/" className="text-gray-700 hover:text-travel-blue transition-colors">Home</Link>
-          <Link to="/#destinations" className="text-gray-700 hover:text-travel-blue transition-colors">Destinations</Link>
-          <Link to="/#plan" className="text-gray-700 hover:text-travel-blue transition-colors">Plan Your Trip</Link>
+          <Link to="/destinations" className="text-gray-700 hover:text-travel-blue transition-colors">Destinations</Link>
+          <Link to="/plan" className="text-gray-700 hover:text-travel-blue transition-colors">Plan Your Trip</Link>
           <Link to="/about" className="text-gray-700 hover:text-travel-blue transition-colors">About Us</Link>
           <Button className="bg-travel-blue hover:bg-travel-blue/90 text-white">
             Get Started
@@ -39,8 +39,8 @@ const Navbar = () => {
         <div className="md:hidden bg-white px-4 py-5 shadow-md animate-fade-in">
           <div className="flex flex-col space-y-4">
             <Link to="/" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link to="/#destinations" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Destinations</Link>
-            <Link to="/#plan" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Plan Your Trip</Link>
+            <Link to="/destinations" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Destinations</Link>
+            <Link to="/plan" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Plan Your Trip</Link>
             <Link to="/about" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>About Us</Link>
             <Button className="bg-travel-blue hover:bg-travel-blue/90 text-white w-full">
               Get Started
