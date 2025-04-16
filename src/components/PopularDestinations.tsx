@@ -16,7 +16,7 @@ const destinations = [
   {
     id: 2,
     name: 'Kyoto, Japan',
-    description: 'Ancient temples, traditional gardens, and cultural experiences in Japan's former capital.',
+    description: 'Ancient temples, traditional gardens, and cultural experiences in Japan\'s former capital.',
     imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2940',
     activities: 65,
     rating: 4.9,
