@@ -31,9 +31,9 @@ const destinations = [
   },
   {
     id: 4,
-    name: 'Costa Rica',
-    description: 'Adventure paradise with rainforests, wildlife, and beautiful Pacific and Caribbean beaches.',
-    imageUrl: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdbc75?q=80&w=2787',
+    name: 'Dubai, UAE',
+    description: 'A futuristic metropolis blending ultramodern architecture, luxury shopping, and vibrant desert landscapes.',
+    imageUrl: 'https://images.unsplash.com/photo-1486718448742-163732cd1544?q=80&w=4392',
     activities: 95,
     rating: 4.6,
   }
