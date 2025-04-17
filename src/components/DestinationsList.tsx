@@ -1,9 +1,9 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Calendar, Utensils, Mountain, Waves, Landmark, Camera } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Expanded destination data with itineraries
 const destinations = [
   {
     id: 1,
@@ -219,7 +219,7 @@ const destinations = [
     id: 6,
     name: 'Marrakech, Morocco',
     description: 'A vibrant city with colorful markets, historic palaces, and a rich blend of cultures and traditions.',
-    imageUrl: 'https://images.unsplash.com/photo-1597212720292-a741c30894b3?q=80&w=2070',
+    imageUrl: 'https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=2834', // Changed image URL
     activities: 70,
     rating: 4.5,
     itinerary: [
