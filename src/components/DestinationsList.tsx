@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { MapPin, Calendar, Utensils, Mountain, Waves, Landmark, Camera } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { destinations as apiDestinations } from '@/data/destinations';
+import DestinationCard from './DestinationCard';
+import DebugImageStatus from './DebugImageStatus';
+import { ImageLoadStatus } from '@/types/destination';
 
 const destinations = [
   {
@@ -260,15 +260,19 @@ const destinations = [
   }
 ];
 
-const DestinationsList = ({ showItineraries = false }) => {
-  const [imageLoadStatus, setImageLoadStatus] = useState({});
+interface DestinationsListProps {
+  showItineraries?: boolean;
+}
+
+const DestinationsList: React.FC<DestinationsListProps> = ({ showItineraries = false }) => {
+  const [imageLoadStatus, setImageLoadStatus] = useState<ImageLoadStatus>({});
 
   console.log('DestinationsList component mounted');
   console.log('showItineraries:', showItineraries);
   console.log('API Destinations data:', apiDestinations);
   console.log('Component Destinations data:', destinations);
 
-  const handleImageLoad = (id, name) => {
+  const handleImageLoad = (id: number, name: string) => {
     console.log(`Image for ${name} (ID: ${id}) loaded successfully`);
     setImageLoadStatus(prev => ({
       ...prev,
@@ -276,7 +280,7 @@ const DestinationsList = ({ showItineraries = false }) => {
     }));
   };
 
-  const handleImageError = (id, name, error) => {
+  const handleImageError = (id: number, name: string, error: any) => {
     console.error(`Error loading image for ${name} (ID: ${id}):`, error);
     console.log('Image URL attempted:', destinations.find(d => d.id === id)?.imageUrl);
     setImageLoadStatus(prev => ({
@@ -287,97 +291,33 @@ const DestinationsList = ({ showItineraries = false }) => {
 
   return (
     <div className="container mx-auto px-4">
-      {!showItineraries && (
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Destinations</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover amazing destinations for your next adventure. Each location offers unique experiences 
-            that can be customized to create your perfect trip.
-          </p>
-        </div>
-      )}
+      {!showItineraries && <DestinationsHeader />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {destinations.map((destination) => {
-          console.log(`Rendering destination card for: ${destination.name} with image: ${destination.imageUrl}`);
-          return (
-            <div 
-              key={destination.id} 
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-            >
-              <div className="h-48 overflow-hidden">
-                <img 
-                  src={destination.imageUrl} 
-                  alt={destination.name} 
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  onLoad={() => handleImageLoad(destination.id, destination.name)}
-                  onError={(e) => handleImageError(destination.id, destination.name, e)}
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center mb-2">
-                  <MapPin className="h-4 w-4 text-travel-coral mr-1" />
-                  <h3 className="font-semibold text-lg">{destination.name}</h3>
-                </div>
-                <p className="text-gray-600 text-sm mb-4">{destination.description}</p>
-                <div className="flex justify-between items-center mb-4">
-                  <div className="text-sm text-gray-500">{destination.activities} activities</div>
-                  <div className="flex items-center">
-                    <span className="text-yellow-500">★</span>
-                    <span className="ml-1 text-sm font-medium">{destination.rating}</span>
-                  </div>
-                </div>
-                
-                {showItineraries && (
-                  <Tabs defaultValue="day1" className="mt-4 mb-6">
-                    <TabsList className="grid w-full grid-cols-3">
-                      <TabsTrigger value="day1">Day 1</TabsTrigger>
-                      <TabsTrigger value="day2">Day 2</TabsTrigger>
-                      <TabsTrigger value="day3">Day 3</TabsTrigger>
-                    </TabsList>
-                    {destination.itinerary.map((day, index) => (
-                      <TabsContent key={`day${index+1}`} value={`day${index+1}`} className="mt-2">
-                        <div className="border rounded-md p-3">
-                          <h4 className="font-medium text-center mb-2">{day.title}</h4>
-                          <div className="space-y-2">
-                            {day.activities.map((activity, actIndex) => (
-                              <div key={actIndex} className="flex items-start text-xs">
-                                <div className="bg-gray-100 p-1 rounded mr-2">
-                                  {activity.icon}
-                                </div>
-                                <div className="flex-1">
-                                  <p className="font-medium">{activity.name}</p>
-                                  <p className="text-gray-500">{activity.time}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </TabsContent>
-                    ))}
-                  </Tabs>
-                )}
-                
-                <Button 
-                  variant="outline" 
-                  className="w-full border-travel-blue text-travel-blue hover:bg-travel-blue hover:text-white"
-                >
-                  Explore
-                </Button>
-              </div>
-            </div>
-          );
-        })}
+        {destinations.map((destination) => (
+          <DestinationCard
+            key={destination.id}
+            destination={destination}
+            showItineraries={showItineraries}
+            onImageLoad={handleImageLoad}
+            onImageError={handleImageError}
+          />
+        ))}
       </div>
 
-      <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-        <h3 className="text-lg font-semibold mb-2">Image Loading Debug Info</h3>
-        <pre className="text-xs overflow-auto">
-          {JSON.stringify(imageLoadStatus, null, 2)}
-        </pre>
-      </div>
+      <DebugImageStatus imageLoadStatus={imageLoadStatus} />
     </div>
   );
 };
+
+const DestinationsHeader: React.FC = () => (
+  <div className="text-center mb-12">
+    <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Destinations</h2>
+    <p className="text-gray-600 max-w-2xl mx-auto">
+      Discover amazing destinations for your next adventure. Each location offers unique experiences 
+      that can be customized to create your perfect trip.
+    </p>
+  </div>
+);
 
 export default DestinationsList;
