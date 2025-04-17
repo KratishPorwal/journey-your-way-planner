@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import DestinationsList from './DestinationsList';
 
 const PopularDestinations = ({ showAll = true }) => {
+  console.log('PopularDestinations component mounted');
+  
   return (
     <section id="destinations" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">

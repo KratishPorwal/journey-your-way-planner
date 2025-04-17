@@ -1,8 +1,8 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { MapPin, Calendar, Utensils, Mountain, Waves, Landmark, Camera } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { destinations as apiDestinations } from '@/data/destinations';
 
 const destinations = [
   {
@@ -219,7 +219,7 @@ const destinations = [
     id: 6,
     name: 'Marrakech, Morocco',
     description: 'A vibrant city with colorful markets, historic palaces, and a rich blend of cultures and traditions.',
-    imageUrl: 'https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=2834', // Changed image URL
+    imageUrl: 'https://images.unsplash.com/photo-1466442929976-97f336a657be?q=80&w=2834',
     activities: 70,
     rating: 4.5,
     itinerary: [
@@ -261,6 +261,30 @@ const destinations = [
 ];
 
 const DestinationsList = ({ showItineraries = false }) => {
+  const [imageLoadStatus, setImageLoadStatus] = useState({});
+
+  console.log('DestinationsList component mounted');
+  console.log('showItineraries:', showItineraries);
+  console.log('API Destinations data:', apiDestinations);
+  console.log('Component Destinations data:', destinations);
+
+  const handleImageLoad = (id, name) => {
+    console.log(`Image for ${name} (ID: ${id}) loaded successfully`);
+    setImageLoadStatus(prev => ({
+      ...prev,
+      [id]: { loaded: true, error: false }
+    }));
+  };
+
+  const handleImageError = (id, name, error) => {
+    console.error(`Error loading image for ${name} (ID: ${id}):`, error);
+    console.log('Image URL attempted:', destinations.find(d => d.id === id)?.imageUrl);
+    setImageLoadStatus(prev => ({
+      ...prev,
+      [id]: { loaded: false, error: true }
+    }));
+  };
+
   return (
     <div className="container mx-auto px-4">
       {!showItineraries && (
@@ -274,71 +298,83 @@ const DestinationsList = ({ showItineraries = false }) => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {destinations.map((destination) => (
-          <div 
-            key={destination.id} 
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            <div className="h-48 overflow-hidden">
-              <img 
-                src={destination.imageUrl} 
-                alt={destination.name} 
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-              />
-            </div>
-            <div className="p-6">
-              <div className="flex items-center mb-2">
-                <MapPin className="h-4 w-4 text-travel-coral mr-1" />
-                <h3 className="font-semibold text-lg">{destination.name}</h3>
+        {destinations.map((destination) => {
+          console.log(`Rendering destination card for: ${destination.name} with image: ${destination.imageUrl}`);
+          return (
+            <div 
+              key={destination.id} 
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src={destination.imageUrl} 
+                  alt={destination.name} 
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  onLoad={() => handleImageLoad(destination.id, destination.name)}
+                  onError={(e) => handleImageError(destination.id, destination.name, e)}
+                />
               </div>
-              <p className="text-gray-600 text-sm mb-4">{destination.description}</p>
-              <div className="flex justify-between items-center mb-4">
-                <div className="text-sm text-gray-500">{destination.activities} activities</div>
-                <div className="flex items-center">
-                  <span className="text-yellow-500">★</span>
-                  <span className="ml-1 text-sm font-medium">{destination.rating}</span>
+              <div className="p-6">
+                <div className="flex items-center mb-2">
+                  <MapPin className="h-4 w-4 text-travel-coral mr-1" />
+                  <h3 className="font-semibold text-lg">{destination.name}</h3>
                 </div>
-              </div>
-              
-              {showItineraries && (
-                <Tabs defaultValue="day1" className="mt-4 mb-6">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="day1">Day 1</TabsTrigger>
-                    <TabsTrigger value="day2">Day 2</TabsTrigger>
-                    <TabsTrigger value="day3">Day 3</TabsTrigger>
-                  </TabsList>
-                  {destination.itinerary.map((day, index) => (
-                    <TabsContent key={`day${index+1}`} value={`day${index+1}`} className="mt-2">
-                      <div className="border rounded-md p-3">
-                        <h4 className="font-medium text-center mb-2">{day.title}</h4>
-                        <div className="space-y-2">
-                          {day.activities.map((activity, actIndex) => (
-                            <div key={actIndex} className="flex items-start text-xs">
-                              <div className="bg-gray-100 p-1 rounded mr-2">
-                                {activity.icon}
+                <p className="text-gray-600 text-sm mb-4">{destination.description}</p>
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-sm text-gray-500">{destination.activities} activities</div>
+                  <div className="flex items-center">
+                    <span className="text-yellow-500">★</span>
+                    <span className="ml-1 text-sm font-medium">{destination.rating}</span>
+                  </div>
+                </div>
+                
+                {showItineraries && (
+                  <Tabs defaultValue="day1" className="mt-4 mb-6">
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="day1">Day 1</TabsTrigger>
+                      <TabsTrigger value="day2">Day 2</TabsTrigger>
+                      <TabsTrigger value="day3">Day 3</TabsTrigger>
+                    </TabsList>
+                    {destination.itinerary.map((day, index) => (
+                      <TabsContent key={`day${index+1}`} value={`day${index+1}`} className="mt-2">
+                        <div className="border rounded-md p-3">
+                          <h4 className="font-medium text-center mb-2">{day.title}</h4>
+                          <div className="space-y-2">
+                            {day.activities.map((activity, actIndex) => (
+                              <div key={actIndex} className="flex items-start text-xs">
+                                <div className="bg-gray-100 p-1 rounded mr-2">
+                                  {activity.icon}
+                                </div>
+                                <div className="flex-1">
+                                  <p className="font-medium">{activity.name}</p>
+                                  <p className="text-gray-500">{activity.time}</p>
+                                </div>
                               </div>
-                              <div className="flex-1">
-                                <p className="font-medium">{activity.name}</p>
-                                <p className="text-gray-500">{activity.time}</p>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </TabsContent>
-                  ))}
-                </Tabs>
-              )}
-              
-              <Button 
-                variant="outline" 
-                className="w-full border-travel-blue text-travel-blue hover:bg-travel-blue hover:text-white"
-              >
-                Explore
-              </Button>
+                      </TabsContent>
+                    ))}
+                  </Tabs>
+                )}
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full border-travel-blue text-travel-blue hover:bg-travel-blue hover:text-white"
+                >
+                  Explore
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
+      </div>
+
+      <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+        <h3 className="text-lg font-semibold mb-2">Image Loading Debug Info</h3>
+        <pre className="text-xs overflow-auto">
+          {JSON.stringify(imageLoadStatus, null, 2)}
+        </pre>
       </div>
     </div>
   );
