@@ -1,54 +1,141 @@
 
-import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Menu, X, MapPin, Map, Compass, Info, Bookmark } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useMediaQuery } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const navClasses = `fixed w-full z-50 transition-all duration-300 ${
+    isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
+  }`;
+
+  const linkClasses = `flex items-center px-4 py-2 rounded-md transition-colors ${
+    isScrolled 
+      ? 'text-gray-700 hover:bg-gray-100' 
+      : 'text-gray-700 hover:bg-white/10'
+  }`;
 
   return (
-    <nav className="bg-white shadow-sm fixed w-full top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="font-bold text-2xl text-travel-blue">
-          Journey<span className="text-travel-coral">Your</span>Way
-        </Link>
-        
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-8 items-center">
-          <Link to="/" className="text-gray-700 hover:text-travel-blue transition-colors">Home</Link>
-          <Link to="/destinations" className="text-gray-700 hover:text-travel-blue transition-colors">Destinations</Link>
-          <Link to="/plan" className="text-gray-700 hover:text-travel-blue transition-colors">Plan Your Trip</Link>
-          <Link to="/about" className="text-gray-700 hover:text-travel-blue transition-colors">About Us</Link>
-          <Button className="bg-travel-blue hover:bg-travel-blue/90 text-white">
-            Get Started
-          </Button>
-        </div>
+    <header className={navClasses}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
+            <div className="bg-travel-blue rounded-full p-2">
+              <MapPin className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-travel-blue">TripQuest</span>
+          </Link>
 
-        {/* Mobile Navigation Toggle */}
-        <button
-          className="md:hidden text-gray-700"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-1">
+            <Link to="/" className={linkClasses}>
+              <Map className="h-4 w-4 mr-2" />
+              Home
+            </Link>
+            <Link to="/destinations" className={linkClasses}>
+              <Compass className="h-4 w-4 mr-2" />
+              Destinations
+            </Link>
+            <Link to="/plan" className={linkClasses}>
+              <Map className="h-4 w-4 mr-2" />
+              Plan Trip
+            </Link>
+            <Link to="/saved-itineraries" className={linkClasses}>
+              <Bookmark className="h-4 w-4 mr-2" />
+              Saved Trips
+            </Link>
+            <Link to="/about" className={linkClasses}>
+              <Info className="h-4 w-4 mr-2" />
+              About Us
+            </Link>
+          </nav>
 
-      {/* Mobile Navigation Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white px-4 py-5 shadow-md animate-fade-in">
-          <div className="flex flex-col space-y-4">
-            <Link to="/" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link to="/destinations" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Destinations</Link>
-            <Link to="/plan" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>Plan Your Trip</Link>
-            <Link to="/about" className="text-gray-700 hover:text-travel-blue py-2 transition-colors" onClick={() => setIsMenuOpen(false)}>About Us</Link>
-            <Button className="bg-travel-blue hover:bg-travel-blue/90 text-white w-full">
-              Get Started
+          {/* Get Started Button */}
+          <div className="hidden md:block">
+            <Button asChild className="bg-travel-coral hover:bg-travel-coral/90 text-white">
+              <Link to="/plan">Get Started</Link>
             </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden text-gray-700"
+            onClick={toggleMenu}
+            aria-label="Toggle Menu"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-      )}
-    </nav>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && isMobile && (
+          <div className="md:hidden mt-4 bg-white rounded-lg shadow-lg overflow-hidden">
+            <Link 
+              to="/"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <Map className="h-5 w-5 mr-3" />
+              Home
+            </Link>
+            <Link 
+              to="/destinations"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <Compass className="h-5 w-5 mr-3" />
+              Destinations
+            </Link>
+            <Link 
+              to="/plan"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <Map className="h-5 w-5 mr-3" />
+              Plan Trip
+            </Link>
+            <Link 
+              to="/saved-itineraries"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <Bookmark className="h-5 w-5 mr-3" />
+              Saved Trips
+            </Link>
+            <Link 
+              to="/about"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <Info className="h-5 w-5 mr-3" />
+              About Us
+            </Link>
+            <div className="px-4 py-3">
+              <Button asChild className="w-full bg-travel-coral hover:bg-travel-coral/90 text-white">
+                <Link to="/plan" onClick={closeMenu}>Get Started</Link>
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
   );
 };
 

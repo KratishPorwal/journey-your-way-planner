@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Calendar, MapPin, Search } from 'lucide-react';
+import { Calendar, MapPin, Search, Save } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import ActivityCard from './ActivityCard';
 import DayPlanner from './DayPlanner';
 
@@ -45,7 +45,7 @@ const activities = [
     id: 4,
     title: 'Kayaking Adventure',
     description: 'Paddle through crystal clear waters and explore hidden coves along the coastline.',
-    imageUrl: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=2070',
+    imageUrl: 'https://images.unsplash.com/photo-1544551763962-0c623066013b?q=80&w=2070',
     duration: '2 hours',
     price: 40,
     rating: 4.7,
@@ -80,13 +80,13 @@ const TripCreator = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [itinerary, setItinerary] = useState<{ day: number; activities: typeof activities }[]>([]);
   const [currentDay, setCurrentDay] = useState<number>(1);
+  const [destination, setDestination] = useState<string>("Bali, Indonesia");
+  const { toast } = useToast();
   
-  // Filter activities based on the selected category
   const filteredActivities = selectedCategory === 'All' 
     ? activities 
     : activities.filter(activity => activity.category === selectedCategory);
 
-  // Initialize days if needed
   const initializeDays = () => {
     if (itinerary.length !== numDays) {
       const newItinerary = [];
@@ -105,12 +105,10 @@ const TripCreator = () => {
     }
   };
 
-  // Call initializeDays whenever numDays changes
   React.useEffect(() => {
     initializeDays();
   }, [numDays]);
 
-  // Add an activity to the current day
   const addActivityToDay = (activityId: number) => {
     const activity = activities.find(a => a.id === activityId);
     if (!activity) return;
@@ -120,7 +118,6 @@ const TripCreator = () => {
       const dayIndex = updatedItinerary.findIndex(item => item.day === currentDay);
       
       if (dayIndex >= 0) {
-        // Check if the activity is already in the day's activities
         const isActivityAlreadyAdded = updatedItinerary[dayIndex].activities.some(a => a.id === activityId);
         
         if (!isActivityAlreadyAdded) {
@@ -135,7 +132,6 @@ const TripCreator = () => {
     });
   };
 
-  // Remove an activity from a day
   const removeActivityFromDay = (activityId: number) => {
     setItinerary(prev => {
       const updatedItinerary = [...prev];
@@ -150,6 +146,49 @@ const TripCreator = () => {
       
       return updatedItinerary;
     });
+  };
+
+  const saveItinerary = () => {
+    const hasActivities = itinerary.some(day => day.activities.length > 0);
+    
+    if (!hasActivities) {
+      toast({
+        title: "Cannot save empty itinerary",
+        description: "Please add at least one activity to your itinerary.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    try {
+      const id = `itinerary-${Date.now()}`;
+      
+      const savedItinerary = {
+        id,
+        destination,
+        days: numDays,
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        itinerary
+      };
+      
+      const existingItineraries = JSON.parse(localStorage.getItem('savedItineraries') || '[]');
+      
+      const updatedItineraries = [savedItinerary, ...existingItineraries];
+      
+      localStorage.setItem('savedItineraries', JSON.stringify(updatedItineraries));
+      
+      toast({
+        title: "Itinerary saved!",
+        description: "Your travel plan has been saved successfully.",
+      });
+    } catch (error) {
+      console.error('Error saving itinerary', error);
+      toast({
+        title: "Failed to save",
+        description: "There was an error saving your itinerary. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -171,7 +210,8 @@ const TripCreator = () => {
                 <Input 
                   placeholder="Where do you want to go?" 
                   className="pl-10" 
-                  defaultValue="Bali, Indonesia"
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
                 />
                 <MapPin className="absolute left-3 top-2.5 text-gray-400 h-5 w-5" />
               </div>
@@ -203,7 +243,6 @@ const TripCreator = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Day Selection and Activities Panel */}
           <div className="lg:col-span-2">
             <Card>
               <CardContent className="p-6">
@@ -267,7 +306,6 @@ const TripCreator = () => {
             </Card>
           </div>
 
-          {/* Itinerary Summary Panel */}
           <div>
             <div className="bg-white p-6 rounded-lg shadow-md sticky top-24">
               <h3 className="text-xl font-semibold mb-6 flex items-center">
@@ -286,9 +324,20 @@ const TripCreator = () => {
                 />
               ))}
 
-              <div className="mt-6">
-                <Button className="w-full bg-travel-blue hover:bg-travel-blue/90 text-white">
+              <div className="mt-6 flex space-x-2">
+                <Button 
+                  className="w-full bg-travel-blue hover:bg-travel-blue/90 text-white flex items-center justify-center"
+                  onClick={saveItinerary}
+                >
+                  <Save className="h-4 w-4 mr-2" />
                   Save Itinerary
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="bg-transparent text-travel-blue border-travel-blue hover:bg-travel-blue/5"
+                  asChild
+                >
+                  <a href="/saved-itineraries">View Saved</a>
                 </Button>
               </div>
             </div>
