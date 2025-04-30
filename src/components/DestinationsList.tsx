@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import { destinations as apiDestinations } from '@/data/destinations';
 import DestinationCard from './DestinationCard';
-import DebugImageStatus from './DebugImageStatus';
 import { ImageLoadStatus } from '@/types/destination';
 import { Mountain, Landmark, Utensils, Camera, Waves } from 'lucide-react';
 
@@ -306,8 +304,6 @@ const DestinationsList: React.FC<DestinationsListProps> = ({ showItineraries = f
           />
         ))}
       </div>
-
-      <DebugImageStatus imageLoadStatus={imageLoadStatus} />
     </div>
   );
 };
