@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { destinations as apiDestinations } from '@/data/destinations';
 import DestinationCard from './DestinationCard';
 import DebugImageStatus from './DebugImageStatus';
 import { ImageLoadStatus } from '@/types/destination';
+import { Mountain, Landmark, Utensils, Camera, Waves } from 'lucide-react';
 
 const destinations = [
   {
