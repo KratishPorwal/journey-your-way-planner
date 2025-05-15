@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,79 +21,241 @@ const destinations = [
   { id: 'marrakech', name: 'Marrakech, Morocco' }
 ];
 
-// Sample activity data
-const activities = [
-  {
-    id: 1,
-    title: 'Guided Rainforest Hike',
-    description: 'Explore the lush rainforest with an expert guide who will show you hidden spots and local wildlife.',
-    imageUrl: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=2073',
-    duration: '3 hours',
-    price: 45,
-    rating: 4.8,
-    category: 'Adventure'
-  },
-  {
-    id: 2,
-    title: 'Beach Sunset Yoga',
-    description: 'Relax with sunset yoga on the beach, perfect for all skill levels with amazing ocean views.',
-    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2070',
-    duration: '1 hour',
-    price: 25,
-    rating: 4.6,
-    category: 'Wellness'
-  },
-  {
-    id: 3,
-    title: 'Local Food Tour',
-    description: 'Taste authentic local cuisine as you explore markets and restaurants with a culinary expert.',
-    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070',
-    duration: '4 hours',
-    price: 65,
-    rating: 4.9,
-    category: 'Food & Drink'
-  },
-  {
-    id: 4,
-    title: 'Kayaking Adventure',
-    description: 'Paddle through crystal clear waters and explore hidden coves along the coastline.',
-    imageUrl: 'https://images.unsplash.com/photo-1544551763962-0c623066013b?q=80&w=2070',
-    duration: '2 hours',
-    price: 40,
-    rating: 4.7,
-    category: 'Water Sports'
-  },
-  {
-    id: 5,
-    title: 'Cultural Museum Visit',
-    description: 'Discover the rich history and traditions of the region through interactive exhibits.',
-    imageUrl: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?q=80&w=2070',
-    duration: '2 hours',
-    price: 20,
-    rating: 4.5,
-    category: 'Culture'
-  },
-  {
-    id: 6,
-    title: 'Cycling City Tour',
-    description: 'Explore the city on a bicycle with stops at major landmarks and hidden gems.',
-    imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070',
-    duration: '3 hours',
-    price: 35,
-    rating: 4.6,
-    category: 'Sightseeing'
-  }
-];
+// Activity data by destination
+const activitiesByDestination = {
+  bali: [
+    {
+      id: 1,
+      title: 'Guided Rainforest Hike',
+      description: 'Explore the lush rainforest with an expert guide who will show you hidden spots and local wildlife.',
+      imageUrl: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=2073',
+      duration: '3 hours',
+      price: 45,
+      rating: 4.8,
+      category: 'Adventure'
+    },
+    {
+      id: 2,
+      title: 'Beach Sunset Yoga',
+      description: 'Relax with sunset yoga on the beach, perfect for all skill levels with amazing ocean views.',
+      imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2070',
+      duration: '1 hour',
+      price: 25,
+      rating: 4.6,
+      category: 'Wellness'
+    },
+    {
+      id: 3,
+      title: 'Local Food Tour',
+      description: 'Taste authentic local cuisine as you explore markets and restaurants with a culinary expert.',
+      imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070',
+      duration: '4 hours',
+      price: 65,
+      rating: 4.9,
+      category: 'Food & Drink'
+    },
+    {
+      id: 4,
+      title: 'Kayaking Adventure',
+      description: 'Paddle through crystal clear waters and explore hidden coves along the coastline.',
+      imageUrl: 'https://images.unsplash.com/photo-1544551763962-0c623066013b?q=80&w=2070',
+      duration: '2 hours',
+      price: 40,
+      rating: 4.7,
+      category: 'Water Sports'
+    },
+    {
+      id: 5,
+      title: 'Cultural Museum Visit',
+      description: 'Discover the rich history and traditions of the region through interactive exhibits.',
+      imageUrl: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?q=80&w=2070',
+      duration: '2 hours',
+      price: 20,
+      rating: 4.5,
+      category: 'Culture'
+    },
+    {
+      id: 6,
+      title: 'Cycling City Tour',
+      description: 'Explore the city on a bicycle with stops at major landmarks and hidden gems.',
+      imageUrl: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070',
+      duration: '3 hours',
+      price: 35,
+      rating: 4.6,
+      category: 'Sightseeing'
+    }
+  ],
+  dubai: [
+    {
+      id: 7,
+      title: 'Desert Safari',
+      description: 'Experience thrilling dune bashing, camel rides, and a traditional Bedouin camp dinner.',
+      imageUrl: 'https://images.unsplash.com/photo-1452022449339-59005948ec5b?q=80&w=2069',
+      duration: '6 hours',
+      price: 85,
+      rating: 4.8,
+      category: 'Adventure'
+    },
+    {
+      id: 8,
+      title: 'Burj Khalifa Visit',
+      description: 'Ascend to the observation deck of the world\'s tallest building for breathtaking views.',
+      imageUrl: 'https://images.unsplash.com/photo-1582672060674-bc2bd808a8f5?q=80&w=2080',
+      duration: '2 hours',
+      price: 40,
+      rating: 4.7,
+      category: 'Sightseeing'
+    },
+    {
+      id: 9,
+      title: 'Luxury Yacht Cruise',
+      description: 'Sail along Dubai\'s stunning coastline on a private yacht with refreshments.',
+      imageUrl: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=2070',
+      duration: '3 hours',
+      price: 120,
+      rating: 4.9,
+      category: 'Water Sports'
+    },
+    {
+      id: 10,
+      title: 'Gold Souk Shopping Tour',
+      description: 'Explore the famous Gold Souk with a guide to help you find the best deals.',
+      imageUrl: 'https://images.unsplash.com/photo-1582650625119-3a31a7c9abe5?q=80&w=2069',
+      duration: '3 hours',
+      price: 30,
+      rating: 4.5,
+      category: 'Culture'
+    }
+  ],
+  paris: [
+    {
+      id: 11,
+      title: 'Eiffel Tower Skip-the-Line',
+      description: 'Skip the long lines and enjoy priority access to this iconic Parisian landmark.',
+      imageUrl: 'https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?q=80&w=1887',
+      duration: '2 hours',
+      price: 65,
+      rating: 4.7,
+      category: 'Sightseeing'
+    },
+    {
+      id: 12,
+      title: 'Louvre Museum Guided Tour',
+      description: 'Discover the masterpieces of the Louvre with an expert art historian guide.',
+      imageUrl: 'https://images.unsplash.com/photo-1565799287995-de836be0cd63?q=80&w=1886',
+      duration: '3 hours',
+      price: 70,
+      rating: 4.8,
+      category: 'Culture'
+    },
+    {
+      id: 13,
+      title: 'Seine River Dinner Cruise',
+      description: 'Enjoy a gourmet dinner while cruising past illuminated Parisian landmarks.',
+      imageUrl: 'https://images.unsplash.com/photo-1622831617330-bc3a4d516fcd?q=80&w=2070',
+      duration: '2.5 hours',
+      price: 95,
+      rating: 4.9,
+      category: 'Food & Drink'
+    }
+  ],
+  kyoto: [
+    {
+      id: 14,
+      title: 'Fushimi Inari Shrine Tour',
+      description: 'Walk through the iconic red torii gates and learn about this sacred Shinto shrine.',
+      imageUrl: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070',
+      duration: '2.5 hours',
+      price: 40,
+      rating: 4.8,
+      category: 'Culture'
+    },
+    {
+      id: 15,
+      title: 'Traditional Tea Ceremony',
+      description: 'Experience the art of Japanese tea ceremony in an authentic setting.',
+      imageUrl: 'https://images.unsplash.com/photo-1542556398-ad66a547be4e?q=80&w=1952',
+      duration: '1.5 hours',
+      price: 55,
+      rating: 4.9,
+      category: 'Culture'
+    },
+    {
+      id: 16,
+      title: 'Bamboo Forest Walk',
+      description: 'Stroll through the enchanting Arashiyama Bamboo Grove away from the crowds.',
+      imageUrl: 'https://images.unsplash.com/photo-1573496799752-986e54949443?q=80&w=2069',
+      duration: '2 hours',
+      price: 35,
+      rating: 4.7,
+      category: 'Adventure'
+    }
+  ],
+  santorini: [
+    {
+      id: 17,
+      title: 'Caldera Sunset Cruise',
+      description: 'Sail around the volcanic islands and witness the famous Santorini sunset.',
+      imageUrl: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?q=80&w=2070',
+      duration: '4 hours',
+      price: 90,
+      rating: 4.9,
+      category: 'Water Sports'
+    },
+    {
+      id: 18,
+      title: 'Wine Tasting Tour',
+      description: 'Sample unique wines from ancient vineyards with spectacular caldera views.',
+      imageUrl: 'https://images.unsplash.com/photo-1566842937765-97e6733d1c74?q=80&w=2070',
+      duration: '3 hours',
+      price: 75,
+      rating: 4.8,
+      category: 'Food & Drink'
+    }
+  ],
+  marrakech: [
+    {
+      id: 19,
+      title: 'Medina Walking Tour',
+      description: 'Navigate the bustling souks and hidden corners of the ancient Medina with a local guide.',
+      imageUrl: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?q=80&w=2070',
+      duration: '3 hours',
+      price: 35,
+      rating: 4.7,
+      category: 'Culture'
+    },
+    {
+      id: 20,
+      title: 'Atlas Mountains Day Trip',
+      description: 'Explore Berber villages and stunning landscapes in the nearby Atlas Mountains.',
+      imageUrl: 'https://images.unsplash.com/photo-1489493887464-892be6d1daae?q=80&w=2070',
+      duration: '8 hours',
+      price: 85,
+      rating: 4.8,
+      category: 'Adventure'
+    }
+  ]
+};
 
 const categories = ['All', 'Adventure', 'Wellness', 'Food & Drink', 'Water Sports', 'Culture', 'Sightseeing'];
 
 const TripCreator = () => {
   const [numDays, setNumDays] = useState<number>(3);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [itinerary, setItinerary] = useState<{ day: number; activities: typeof activities }[]>([]);
+  const [itinerary, setItinerary] = useState<{ day: number; activities: any[] }[]>([]);
   const [currentDay, setCurrentDay] = useState<number>(1);
   const [destination, setDestination] = useState<string>("bali");
+  const [activities, setActivities] = useState(activitiesByDestination.bali);
   const { toast } = useToast();
+  
+  // Update activities when destination changes
+  useEffect(() => {
+    const destinationActivities = activitiesByDestination[destination as keyof typeof activitiesByDestination] || [];
+    setActivities(destinationActivities);
+    // Reset itinerary when destination changes
+    setItinerary([]);
+    initializeDays();
+  }, [destination]);
   
   const filteredActivities = selectedCategory === 'All' 
     ? activities 
@@ -307,13 +469,19 @@ const TripCreator = () => {
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {filteredActivities.map((activity) => (
-                          <ActivityCard 
-                            key={activity.id}
-                            {...activity}
-                            onAdd={addActivityToDay}
-                          />
-                        ))}
+                        {filteredActivities.length > 0 ? (
+                          filteredActivities.map((activity) => (
+                            <ActivityCard 
+                              key={activity.id}
+                              {...activity}
+                              onAdd={addActivityToDay}
+                            />
+                          ))
+                        ) : (
+                          <p className="col-span-2 text-center py-10 text-gray-500">
+                            No activities available for this category in {destinations.find(d => d.id === destination)?.name}.
+                          </p>
+                        )}
                       </div>
                     </TabsContent>
                   ))}
