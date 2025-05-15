@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,6 +9,17 @@ import { Calendar, MapPin, Search, Save } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ActivityCard from './ActivityCard';
 import DayPlanner from './DayPlanner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+
+// Sample destinations
+const destinations = [
+  { id: 'bali', name: 'Bali, Indonesia' },
+  { id: 'dubai', name: 'Dubai, UAE' },
+  { id: 'paris', name: 'Paris, France' },
+  { id: 'kyoto', name: 'Kyoto, Japan' },
+  { id: 'santorini', name: 'Santorini, Greece' },
+  { id: 'marrakech', name: 'Marrakech, Morocco' }
+];
 
 // Sample activity data
 const activities = [
@@ -80,7 +92,7 @@ const TripCreator = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [itinerary, setItinerary] = useState<{ day: number; activities: typeof activities }[]>([]);
   const [currentDay, setCurrentDay] = useState<number>(1);
-  const [destination, setDestination] = useState<string>("Bali, Indonesia");
+  const [destination, setDestination] = useState<string>("bali");
   const { toast } = useToast();
   
   const filteredActivities = selectedCategory === 'All' 
@@ -165,7 +177,7 @@ const TripCreator = () => {
       
       const savedItinerary = {
         id,
-        destination,
+        destination: destinations.find(d => d.id === destination)?.name || destination,
         days: numDays,
         date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
         itinerary
@@ -207,12 +219,16 @@ const TripCreator = () => {
             <div className="lg:col-span-2">
               <h3 className="text-xl font-medium mb-4">Destination</h3>
               <div className="relative">
-                <Input 
-                  placeholder="Where do you want to go?" 
-                  className="pl-10" 
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                />
+                <Select value={destination} onValueChange={setDestination}>
+                  <SelectTrigger className="w-full pl-10">
+                    <SelectValue placeholder="Where do you want to go?" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {destinations.map((dest) => (
+                      <SelectItem key={dest.id} value={dest.id}>{dest.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <MapPin className="absolute left-3 top-2.5 text-gray-400 h-5 w-5" />
               </div>
             </div>
