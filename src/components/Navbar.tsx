@@ -40,7 +40,7 @@ const Navbar = () => {
             <div className="bg-travel-blue rounded-full p-2">
               <MapPin className="h-5 w-5 text-white" />
             </div>
-            <span className="text-2xl font-bold text-travel-blue">TripQuest</span>
+            <span className="text-2xl font-bold text-travel-blue">Journey<span className="text-travel-coral">Your</span>Way</span>
           </Link>
 
           {/* Desktop Navigation */}
