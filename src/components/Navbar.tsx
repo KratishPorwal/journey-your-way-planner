@@ -1,14 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, MapPin, Map, Compass, Info, Bookmark } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, MapPin, Map, Compass, Info, Bookmark, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { toast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +23,15 @@ const Navbar = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    navigate('/login');
+  };
 
   const navClasses = `fixed w-full z-50 transition-all duration-300 ${
     isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'
@@ -65,6 +76,10 @@ const Navbar = () => {
               <Info className="h-4 w-4 mr-2" />
               About Us
             </Link>
+            <button onClick={handleLogout} className={linkClasses}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
+            </button>
           </nav>
 
           {/* Get Started Button */}
@@ -127,6 +142,16 @@ const Navbar = () => {
               <Info className="h-5 w-5 mr-3" />
               About Us
             </Link>
+            <button
+              onClick={() => {
+                handleLogout();
+                closeMenu();
+              }}
+              className="w-full text-left px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+            >
+              <LogOut className="h-5 w-5 mr-3" />
+              Logout
+            </button>
             <div className="px-4 py-3">
               <Button asChild className="w-full bg-travel-coral hover:bg-travel-coral/90 text-white">
                 <Link to="/plan" onClick={closeMenu}>Get Started</Link>

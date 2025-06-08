@@ -10,6 +10,8 @@ import PlanTrip from "./pages/PlanTrip";
 import AboutUs from "./pages/AboutUs";
 import SavedItineraries from "./pages/SavedItineraries";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +22,32 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/destinations" element={<Destinations />} />
-          <Route path="/plan" element={<PlanTrip />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/saved-itineraries" element={<SavedItineraries />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Index />
+            </ProtectedRoute>
+          } />
+          <Route path="/destinations" element={
+            <ProtectedRoute>
+              <Destinations />
+            </ProtectedRoute>
+          } />
+          <Route path="/plan" element={
+            <ProtectedRoute>
+              <PlanTrip />
+            </ProtectedRoute>
+          } />
+          <Route path="/about" element={
+            <ProtectedRoute>
+              <AboutUs />
+            </ProtectedRoute>
+          } />
+          <Route path="/saved-itineraries" element={
+            <ProtectedRoute>
+              <SavedItineraries />
+            </ProtectedRoute>
+          } />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
