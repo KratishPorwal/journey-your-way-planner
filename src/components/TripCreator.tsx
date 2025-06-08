@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -174,7 +173,7 @@ const activitiesByDestination = {
       id: 15,
       title: 'Traditional Tea Ceremony',
       description: 'Experience the art of Japanese tea ceremony in an authentic setting.',
-      imageUrl: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1515823064-d6e0c0461262?w=400&h=300&fit=crop&crop=center',
       duration: '1.5 hours',
       price: 55,
       rating: 4.9,
@@ -218,7 +217,7 @@ const activitiesByDestination = {
       id: 19,
       title: 'Medina Walking Tour',
       description: 'Navigate the bustling souks and hidden corners of the ancient Medina with a local guide.',
-      imageUrl: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73a0e?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1489749798305-4fea3ae536d2?w=400&h=300&fit=crop&crop=center',
       duration: '3 hours',
       price: 35,
       rating: 4.7,
@@ -228,7 +227,7 @@ const activitiesByDestination = {
       id: 20,
       title: 'Atlas Mountains Day Trip',
       description: 'Explore Berber villages and stunning landscapes in the nearby Atlas Mountains.',
-      imageUrl: 'https://images.unsplash.com/photo-1516825513084-7a44fd5d0c18?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=400&h=300&fit=crop&crop=center',
       duration: '8 hours',
       price: 85,
       rating: 4.8,
