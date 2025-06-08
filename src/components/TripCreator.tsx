@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -48,7 +47,7 @@ const activitiesByDestination = {
       id: 3,
       title: 'Local Food Tour',
       description: 'Taste authentic local cuisine as you explore markets and restaurants with a culinary expert.',
-      imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop&crop=center',
       duration: '4 hours',
       price: 65,
       rating: 4.9,
@@ -58,7 +57,7 @@ const activitiesByDestination = {
       id: 4,
       title: 'Kayaking Adventure',
       description: 'Paddle through crystal clear waters and explore hidden coves along the coastline.',
-      imageUrl: 'https://images.unsplash.com/photo-1544551763962-0c623066013b?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=400&h=300&fit=crop&crop=center',
       duration: '2 hours',
       price: 40,
       rating: 4.7,
@@ -68,7 +67,7 @@ const activitiesByDestination = {
       id: 5,
       title: 'Cultural Museum Visit',
       description: 'Discover the rich history and traditions of the region through interactive exhibits.',
-      imageUrl: 'https://images.unsplash.com/photo-1571847140471-1d7766e8f491?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?w=400&h=300&fit=crop&crop=center',
       duration: '2 hours',
       price: 20,
       rating: 4.5,
@@ -78,7 +77,7 @@ const activitiesByDestination = {
       id: 6,
       title: 'Cycling City Tour',
       description: 'Explore the city on a bicycle with stops at major landmarks and hidden gems.',
-      imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop&crop=center',
       duration: '3 hours',
       price: 35,
       rating: 4.6,
@@ -120,7 +119,7 @@ const activitiesByDestination = {
       id: 10,
       title: 'Gold Souk Shopping Tour',
       description: 'Explore the famous Gold Souk with a guide to help you find the best deals.',
-      imageUrl: 'https://images.unsplash.com/photo-1518544866371-e8e2e3d4574b?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=400&h=300&fit=crop&crop=center',
       duration: '3 hours',
       price: 30,
       rating: 4.5,
@@ -152,7 +151,7 @@ const activitiesByDestination = {
       id: 13,
       title: 'Seine River Dinner Cruise',
       description: 'Enjoy a gourmet dinner while cruising past illuminated Parisian landmarks.',
-      imageUrl: 'https://images.unsplash.com/photo-1549144511-f099e773c147?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400&h=300&fit=crop&crop=center',
       duration: '2.5 hours',
       price: 95,
       rating: 4.9,
