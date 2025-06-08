@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -89,7 +90,7 @@ const activitiesByDestination = {
       id: 7,
       title: 'Desert Safari',
       description: 'Experience thrilling dune bashing, camel rides, and a traditional Bedouin camp dinner.',
-      imageUrl: 'https://images.unsplash.com/photo-1451337516015-6b6e9a44a8a3?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=400&h=300&fit=crop&crop=center',
       duration: '6 hours',
       price: 85,
       rating: 4.8,
@@ -99,7 +100,7 @@ const activitiesByDestination = {
       id: 8,
       title: 'Burj Khalifa Visit',
       description: 'Ascend to the observation deck of the world\'s tallest building for breathtaking views.',
-      imageUrl: 'https://images.unsplash.com/photo-1512453979798-5ea266f88b10?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=400&h=300&fit=crop&crop=center',
       duration: '2 hours',
       price: 40,
       rating: 4.7,
@@ -119,7 +120,7 @@ const activitiesByDestination = {
       id: 10,
       title: 'Gold Souk Shopping Tour',
       description: 'Explore the famous Gold Souk with a guide to help you find the best deals.',
-      imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=400&h=300&fit=crop&crop=center',
+      imageUrl: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop&crop=center',
       duration: '3 hours',
       price: 30,
       rating: 4.5,
