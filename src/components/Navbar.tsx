@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, MapPin, Map, Compass, Info, Bookmark, LogOut } from 'lucide-react';
+import { Menu, X, MapPin, Map, Compass, Info, Bookmark, LogOut, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { toast } from '@/hooks/use-toast';
@@ -76,6 +76,10 @@ const Navbar = () => {
               <Info className="h-4 w-4 mr-2" />
               About Us
             </Link>
+            <Link to="/contact" className={linkClasses}>
+              <MessageCircle className="h-4 w-4 mr-2" />
+              Contact
+            </Link>
             <button onClick={handleLogout} className={linkClasses}>
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -141,6 +145,14 @@ const Navbar = () => {
             >
               <Info className="h-5 w-5 mr-3" />
               About Us
+            </Link>
+            <Link 
+              to="/contact"
+              className="block px-4 py-3 text-gray-700 hover:bg-gray-100 flex items-center"
+              onClick={closeMenu}
+            >
+              <MessageCircle className="h-5 w-5 mr-3" />
+              Contact
             </Link>
             <button
               onClick={() => {

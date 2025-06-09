@@ -9,6 +9,7 @@ import Destinations from "./pages/Destinations";
 import PlanTrip from "./pages/PlanTrip";
 import AboutUs from "./pages/AboutUs";
 import SavedItineraries from "./pages/SavedItineraries";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -46,6 +47,11 @@ const App = () => (
           <Route path="/saved-itineraries" element={
             <ProtectedRoute>
               <SavedItineraries />
+            </ProtectedRoute>
+          } />
+          <Route path="/contact" element={
+            <ProtectedRoute>
+              <Contact />
             </ProtectedRoute>
           } />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
